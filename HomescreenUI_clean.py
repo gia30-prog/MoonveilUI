@@ -12,14 +12,126 @@ def open_settings():
 def open_profile():
     messagebox.showinfo("Profile", "This would show the user profile.")
 
-def open_soundscapes():
-    messagebox.showinfo("Soundscapes", "This would open the soundscapes.")
+def open_soundscapes(container, home_screen):
+    sound_screen = tk.Frame(container)
+    sound_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
+    sound_screen.lift()
 
-def open_schedule():
-    messagebox.showinfo("Schedule", "This would open the schedule.")
+    def go_back():
+        sound_screen.destroy()
+        home_screen.lift()
 
-def open_reminders():
-    messagebox.showinfo("Reminders", "This would open the reminders.")
+    back_btn = tk.Button(sound_screen, text="←", font=("Arial", 20), command=go_back)
+    back_btn.place(x=10, y=10, width=90, height=50)
+    fwd_btn = tk.Button(sound_screen, text="→", font=("Arial", 20), state="disabled")
+    fwd_btn.place(x=500, y=10, width=90, height=50)
+
+    # Draw 8 soundscape rows as in the wireframe
+    for i in range(8):
+        y = 80 + i * 80
+        row = tk.Frame(sound_screen, highlightbackground="black", highlightthickness=2)
+        row.place(x=40, y=y, width=520, height=70)
+
+        # Left square (icon placeholder)
+        icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black")
+        icon.place(x=8, y=7)
+
+        # Horizontal line (stationary)
+        line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0,)
+        line_canvas.place(x=70, y=30)
+        line_canvas.create_line(0, 5, 200, 5, width=3)
+
+        # Play/pause button (stationary, not overlapping)
+        play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0)
+        play_canvas.place(x=150, y=38)
+        # Play triangle (left)
+        play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="black")
+        # Pause bars (right, spaced apart)
+        play_canvas.create_rectangle(32, 7, 37, 23, fill="black")
+        play_canvas.create_rectangle(40, 7, 45, 23, fill="black")
+
+        # Two smaller circles on the right, vertically aligned
+        right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+        right1.place(x=470, y=10)
+        right1.create_oval(2, 2, 22, 22, width=2)
+        # Dotted arrow pointing down
+        # Dots
+        right1.create_oval(11, 6, 13, 8, fill="white")
+        right1.create_oval(11, 10, 13, 12, fill="white")
+        right1.create_oval(11, 14, 13, 16, fill="white")
+        # Arrow head
+        right1.create_line(9, 15, 12, 20, fill="black", width=1)
+        right1.create_line(15, 15, 12, 20, fill="black", width=1)
+
+        right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+        right2.place(x=470, y=38)
+        right2.create_oval(2, 2, 22, 22, width=2)
+        #right2.create_arc(6, 10, 18, 20, start=0, extent=270, style=tk.ARC, width=2)
+        #right2.create_line(16, 16, 20, 12, width=2)
+
+def open_schedule(container, home_screen):
+    schedule_screen = tk.Frame(container)
+    schedule_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
+    schedule_screen.lift()
+
+    def go_back():
+        schedule_screen.destroy()
+        home_screen.lift()
+
+    back_btn = tk.Button(schedule_screen, text="←", font=("Arial", 20), command=go_back)
+    back_btn.place(x=10, y=10, width=90, height=50)
+    fwd_btn = tk.Button(schedule_screen, text="→", font=("Arial", 20), state="disabled")
+    fwd_btn.place(x=500, y=10, width=90, height=50)
+
+    # Draw 10 schedule rows as in the wireframe (with lines and dots)
+    for i in range(10):
+        y = 80 + i * 70
+        row = tk.Frame(schedule_screen, highlightbackground="black", highlightthickness=2)
+        row.place(x=40, y=y, width=520, height=60)
+
+        # Left: label with lines and dots (time placeholder)
+        label = tk.Label(row, text="\n_ _ : _ _", font=("Courier", 16), justify="left")
+        label.place(x=10, y=5)
+
+        # Right: main square (checkbox placeholder)
+        box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black")
+        box.place(x=470, y=10)
+        #box.create_rectangle(2, 2, 28, 28, width=2)
+
+        # Small box in the right corner of the big box
+        #small_box = tk.Canvas(row, width=16, height=16,) #highlightthickness=1, #highlightbackground="white")
+        #small_box.place(x=500, y=10)
+        #small_box.create_rectangle(2, 2, 14, 14, width=2)
+
+def open_reminders(container, home_screen):
+    reminders_screen = tk.Frame(container)
+    reminders_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
+    reminders_screen.lift()
+
+    def go_back():
+        reminders_screen.destroy()
+        home_screen.lift()
+
+    back_btn = tk.Button(reminders_screen, text="←", font=("Arial", 20), command=go_back)
+    back_btn.place(x=10, y=10, width=90, height=50)
+    fwd_btn = tk.Button(reminders_screen, text="→", font=("Arial", 20), state="disabled")
+    fwd_btn.place(x=500, y=10, width=90, height=50)
+
+    # Draw 4 speech bubble reminders as in the wireframe
+    for i in range(4):
+        y = 80 + i * 150
+        canvas = tk.Canvas(reminders_screen, width=520, height=120, bg="white", highlightthickness=2, highlightbackground="black")
+        canvas.place(x=40, y=y)
+        # Draw rounded rectangle (bubble)
+        canvas.create_oval(10, 10, 50, 50, width=2)
+        canvas.create_oval(470, 10, 510, 50, width=2)
+        canvas.create_rectangle(30, 10, 490, 110, width=2)
+        canvas.create_arc(10, 10, 50, 50, start=90, extent=180, style=tk.ARC, width=2)
+        canvas.create_arc(470, 10, 510, 50, start=270, extent=180, style=tk.ARC, width=2)
+        # Draw tail (triangle)
+        canvas.create_polygon(30, 90, 10, 110, 50, 110, fill="white", outline="black", width=2)
+        # Time label (dots and dashes)
+        canvas.create_text(470, 100, text=". . :\n_ _ - _ _", font=("Courier", 12), anchor="se")
 
 def block_apps():
     messagebox.showinfo("App Blocking", f"Apps will be blocked from {declare_times['sleep']} to {declare_times['wake']}.")
@@ -107,12 +219,12 @@ def main():
                           command=lambda: open_clock_screen(container, home_screen))
     btn_clock.place(x=90, y=150, width=180, height=180)
 
-    btn_sound = tk.Button(home_screen, text="Soundscapes", font=("Arial", 16), command=open_soundscapes)
+    btn_sound = tk.Button(home_screen, text="Soundscapes", font=("Arial", 16), command=lambda: open_soundscapes(container, home_screen))
     btn_sound.place(x=330, y=150, width=180, height=180)
 
-    btn_schedule = tk.Button(home_screen, text="Schedule", font=("Arial", 16), command=open_schedule)
+    btn_schedule = tk.Button(home_screen, text="Schedule", font=("Arial", 16), command=lambda: open_schedule(container, home_screen))
     btn_schedule.place(x=90, y=380, width=180, height=180)
-    btn_reminders = tk.Button(home_screen, text="Reminders", font=("Arial", 16), command=open_reminders)
+    btn_reminders = tk.Button(home_screen, text="Reminders", font=("Arial", 16), command=lambda: open_reminders(container, home_screen))
     btn_reminders.place(x=330, y=380, width=180, height=180)
 
     tk.Label(home_screen, text='Home screen').pack()
