@@ -26,9 +26,6 @@ def open_profile_screen(container, home_screen):
     back_btn = tk.Button(profile_screen, text="←", font=("Arial", 20), command=go_back)
     back_btn.place(x=10, y=10, width=110, height=50)
 
-    # Forward button (top right)
-    fwd_btn = tk.Button(profile_screen, text="→", font=("Arial", 20), state="disabled")
-    fwd_btn.place(x=480, y=10, width=110, height=50)
 
     # Slightly smaller circle in the center
     circle_diam = 320
@@ -45,11 +42,104 @@ def open_profile_screen(container, home_screen):
     nav_btn_w = nav_w // 3
     nav_frame = tk.Frame(profile_screen, highlightbackground="black", highlightthickness=2)
     nav_frame.place(x=0, y=nav_y, width=nav_w, height=nav_h)
-    btn1 = tk.Button(nav_frame, text="Favorite sounds", font=("Arial", 16), state="disabled")
+
+    # Area to fill with soundscapes/habits/graph when a nav button is clicked (now below nav bar)
+    soundscapes_area_height = 420
+    soundscapes_area = tk.Frame(profile_screen, width=520, height=soundscapes_area_height)
+    soundscapes_area.place(x=40, y=nav_y+nav_h+10, width=520, height=soundscapes_area_height)
+
+
+    def show_favorite_sounds():
+        # Clear area first
+        for widget in soundscapes_area.winfo_children():
+            widget.destroy()
+        # Draw 5 soundscape rows as in the wireframe
+        for i in range(5):
+            y = i * 80
+            row = tk.Frame(soundscapes_area, highlightbackground="black", highlightthickness=2)
+            row.place(x=0, y=y, width=520, height=70)
+            # Left square (icon placeholder)
+            icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black")
+            icon.place(x=8, y=7)
+            # Horizontal line (stationary)
+            line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0)
+            line_canvas.place(x=70, y=30)
+            line_canvas.create_line(0, 5, 200, 5, width=3)
+            # Play/pause button (stationary, not overlapping)
+            play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0)
+            play_canvas.place(x=150, y=38)
+            play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="black")
+            play_canvas.create_rectangle(32, 7, 37, 23, fill="black")
+            play_canvas.create_rectangle(40, 7, 45, 23, fill="black")
+            # Two smaller circles on the right, vertically aligned
+            right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+            right1.place(x=470, y=10)
+            right1.create_oval(2, 2, 22, 22, width=2)
+            right1.create_oval(11, 6, 13, 8, fill="white")
+            right1.create_oval(11, 10, 13, 12, fill="white")
+            right1.create_oval(11, 14, 13, 16, fill="white")
+            right1.create_line(9, 15, 12, 20, fill="black", width=1)
+            right1.create_line(15, 15, 12, 20, fill="black", width=1)
+            right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+            right2.place(x=470, y=38)
+            right2.create_oval(2, 2, 22, 22, width=2)
+
+    def show_sleep_tracker():
+        # Clear area first
+        for widget in soundscapes_area.winfo_children():
+            widget.destroy()
+        # Example sleep data (hours per day)
+        sleep_data = [7, 6, 8, 5, 7.5, 6.5, 8]
+        days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        max_sleep = 10
+        width = 520
+        height = 220
+        margin = 40
+        bar_w = 40
+        gap = (width - 2*margin - bar_w*len(sleep_data)) // (len(sleep_data)-1)
+        graph = tk.Canvas(soundscapes_area, width=width, height=height, bg="white", highlightthickness=0)
+        graph.place(x=0, y=0)
+        # Y axis
+        graph.create_line(margin, margin, margin, height-margin, width=2)
+        # X axis
+        graph.create_line(margin, height-margin, width-margin, height-margin, width=2)
+        # Bars
+        for i, hours in enumerate(sleep_data):
+            x0 = margin + i*(bar_w+gap)
+            x1 = x0 + bar_w
+            y1 = height-margin
+            y0 = y1 - (hours/max_sleep)*(height-2*margin)
+            graph.create_rectangle(x0, y0, x1, y1, fill="#7ec8e3", outline="#333", width=2)
+            graph.create_text((x0+x1)//2, y1+15, text=days[i], font=("Arial", 12))
+            graph.create_text((x0+x1)//2, y0-10, text=f"{hours}", font=("Arial", 10))
+        # Y axis labels
+        for h in range(0, max_sleep+1, 2):
+            y = height-margin - (h/max_sleep)*(height-2*margin)
+            graph.create_text(margin-15, y, text=str(h), font=("Arial", 10))
+
+    def show_habits():
+        # Clear area first
+        for widget in soundscapes_area.winfo_children():
+            widget.destroy()
+        # Example list of habits
+        habits = [
+            "Go to bed before 11pm",
+            "No screens 30 min before bed",
+            "Read for 10 minutes",
+            "Meditate before sleep",
+            "Wake up at the same time"
+        ]
+        habits_label = tk.Label(soundscapes_area, text="Your Habits to Implement:", font=("Arial", 16, "bold"))
+        habits_label.place(x=20, y=10)
+        for i, habit in enumerate(habits):
+            habit_label = tk.Label(soundscapes_area, text="• " + habit, font=("Arial", 14), anchor="w", justify="left")
+            habit_label.place(x=40, y=50 + i*36)
+
+    btn1 = tk.Button(nav_frame, text="Favorite sounds", font=("Arial", 16), command=show_favorite_sounds)
     btn1.place(x=0, y=0, width=nav_btn_w, height=nav_h)
-    btn2 = tk.Button(nav_frame, text="Sleep Tracker", font=("Arial", 16), state="disabled")
+    btn2 = tk.Button(nav_frame, text="Sleep Tracker", font=("Arial", 16), command=show_sleep_tracker)
     btn2.place(x=nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
-    btn3 = tk.Button(nav_frame, text="Habits", font=("Arial", 16), state="disabled")
+    btn3 = tk.Button(nav_frame, text="Habits", font=("Arial", 16), command=show_habits)
     btn3.place(x=2*nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
 
 def open_soundscapes(container, home_screen):
@@ -255,8 +345,8 @@ def open_clock_screen(container, home_screen):
 def main():
     root = tk.Tk()
     root.title("Moonveil Home Screen")
-    root.geometry("600x700")
-    root.resizable(False, False)
+    root.geometry("600x800")
+    root.resizable(True, True)
 
     container = tk.Frame(root)
     container.pack(fill="both", expand=True)
