@@ -6,8 +6,50 @@ import math
 # Store sleep times
 declare_times = {"wake": "", "sleep": ""}
 
-def open_settings():
-    messagebox.showinfo("Settings", "This would open the app settings.")
+def open_settings(container, home_screen):
+    settings_screen = tk.Frame(container)
+    settings_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
+    settings_screen.lift()
+
+    def go_back():
+        settings_screen.destroy()
+        home_screen.lift()
+
+    # Back button (top left)
+    back_btn = tk.Button(settings_screen, text="←", font=("Arial", 20), command=go_back)
+    back_btn.place(x=10, y=10, width=110, height=50)
+
+    # Settings options
+    options = [
+        ("Edit Profile", "circle"),
+        ("Notification Preference", ">"),
+        ("Blocked Apps", ">"),
+        ("Share App", ">"),
+        ("About", ">"),
+        ("Language", ">"),
+        ("Help", ">"),
+        ("LogOut", None)
+    ]
+    y_start = 90
+    box_h = 60
+    box_w = 600 - 80
+    x_start = 40
+    for i, (label, icon) in enumerate(options):
+        y = y_start + i * (box_h + 12)
+        frame = tk.Frame(settings_screen, highlightbackground="black", highlightthickness=2)
+        frame.place(x=x_start, y=y, width=box_w, height=box_h)
+        lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w")
+        lbl.place(x=12, y=10, width=box_w-60, height=box_h-20)
+        if icon == ">":
+            arrow = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
+            arrow.place(x=box_w-50, y=10)
+            # Draw a sharp arrowhead where both lines meet at (32,20)
+            arrow.create_line(12, 10, 32, 20, width=4, capstyle=tk.ROUND)
+            arrow.create_line(12, 30, 32, 20, width=4, capstyle=tk.ROUND)
+        elif icon == "circle":
+            circ = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
+            circ.place(x=box_w-50, y=10)
+            circ.create_oval(10, 10, 30, 30, width=3)
 
 def open_profile():
     # This function is now unused; see open_profile_screen for the real screen.
@@ -354,7 +396,7 @@ def main():
     home_screen = tk.Frame(container)
     home_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-    btn_settings = tk.Button(home_screen, text="⚙️", command=open_settings)
+    btn_settings = tk.Button(home_screen, text="⚙️", command=lambda: open_settings(container, home_screen))
     btn_settings.place(x=10, y=10, width=50, height=50)
 
     btn_profile = tk.Button(home_screen, text="○", command=lambda: open_profile_screen(container, home_screen))
