@@ -10,7 +10,47 @@ def open_settings():
     messagebox.showinfo("Settings", "This would open the app settings.")
 
 def open_profile():
-    messagebox.showinfo("Profile", "This would show the user profile.")
+    # This function is now unused; see open_profile_screen for the real screen.
+    pass
+
+def open_profile_screen(container, home_screen):
+    profile_screen = tk.Frame(container)
+    profile_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
+    profile_screen.lift()
+
+    def go_back():
+        profile_screen.destroy()
+        home_screen.lift()
+
+    # Back button (top left)
+    back_btn = tk.Button(profile_screen, text="←", font=("Arial", 20), command=go_back)
+    back_btn.place(x=10, y=10, width=110, height=50)
+
+    # Forward button (top right)
+    fwd_btn = tk.Button(profile_screen, text="→", font=("Arial", 20), state="disabled")
+    fwd_btn.place(x=480, y=10, width=110, height=50)
+
+    # Slightly smaller circle in the center
+    circle_diam = 320
+    # Add padding to ensure the oval is not clipped by the canvas border
+    pad = 8
+    canvas = tk.Canvas(profile_screen, width=circle_diam+2*pad, height=circle_diam+2*pad, highlightthickness=0)
+    canvas.place(x=(600-circle_diam)//2 - pad, y=90 - pad)
+    canvas.create_oval(pad, pad, circle_diam+pad, circle_diam+pad, width=2)
+
+    # Bottom navigation bar with three buttons
+    nav_y = 480
+    nav_w = 600
+    nav_h = 60
+    nav_btn_w = nav_w // 3
+    nav_frame = tk.Frame(profile_screen, highlightbackground="black", highlightthickness=2)
+    nav_frame.place(x=0, y=nav_y, width=nav_w, height=nav_h)
+    btn1 = tk.Button(nav_frame, text="Favorite sounds", font=("Arial", 16), state="disabled")
+    btn1.place(x=0, y=0, width=nav_btn_w, height=nav_h)
+    btn2 = tk.Button(nav_frame, text="Sleep Tracker", font=("Arial", 16), state="disabled")
+    btn2.place(x=nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
+    btn3 = tk.Button(nav_frame, text="Habits", font=("Arial", 16), state="disabled")
+    btn3.place(x=2*nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
 
 def open_soundscapes(container, home_screen):
     sound_screen = tk.Frame(container)
@@ -23,8 +63,6 @@ def open_soundscapes(container, home_screen):
 
     back_btn = tk.Button(sound_screen, text="←", font=("Arial", 20), command=go_back)
     back_btn.place(x=10, y=10, width=90, height=50)
-    fwd_btn = tk.Button(sound_screen, text="→", font=("Arial", 20), state="disabled")
-    fwd_btn.place(x=500, y=10, width=90, height=50)
 
     # Draw 8 soundscape rows as in the wireframe
     for i in range(8):
@@ -80,8 +118,6 @@ def open_schedule(container, home_screen):
 
     back_btn = tk.Button(schedule_screen, text="←", font=("Arial", 20), command=go_back)
     back_btn.place(x=10, y=10, width=90, height=50)
-    fwd_btn = tk.Button(schedule_screen, text="→", font=("Arial", 20), state="disabled")
-    fwd_btn.place(x=500, y=10, width=90, height=50)
 
     # Draw 10 schedule rows as in the wireframe (with lines and dots)
     for i in range(10):
@@ -90,12 +126,12 @@ def open_schedule(container, home_screen):
         row.place(x=40, y=y, width=520, height=60)
 
         # Left: label with lines and dots (time placeholder)
-        label = tk.Label(row, text="\n_ _ : _ _", font=("Courier", 16), justify="left")
+        label = tk.Label(row, text="\n_ _:_ _", font=("Courier", 16), justify="left")
         label.place(x=10, y=5)
 
         # Right: main square (checkbox placeholder)
         box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black")
-        box.place(x=470, y=10)
+        box.place(x=470, y=12)
         #box.create_rectangle(2, 2, 28, 28, width=2)
 
         # Small box in the right corner of the big box
@@ -114,24 +150,35 @@ def open_reminders(container, home_screen):
 
     back_btn = tk.Button(reminders_screen, text="←", font=("Arial", 20), command=go_back)
     back_btn.place(x=10, y=10, width=90, height=50)
-    fwd_btn = tk.Button(reminders_screen, text="→", font=("Arial", 20), state="disabled")
-    fwd_btn.place(x=500, y=10, width=90, height=50)
 
-    # Draw 4 speech bubble reminders as in the wireframe
+    # Draw 4 speech bubble reminders as text message bubbles
     for i in range(4):
-        y = 80 + i * 150
-        canvas = tk.Canvas(reminders_screen, width=520, height=120, bg="white", highlightthickness=2, highlightbackground="black")
+        y = 80 + i * 120
+        canvas = tk.Canvas(reminders_screen, width=520, height=100, highlightthickness=0)
         canvas.place(x=40, y=y)
-        # Draw rounded rectangle (bubble)
-        canvas.create_oval(10, 10, 50, 50, width=2)
-        canvas.create_oval(470, 10, 510, 50, width=2)
-        canvas.create_rectangle(30, 10, 490, 110, width=2)
-        canvas.create_arc(10, 10, 50, 50, start=90, extent=180, style=tk.ARC, width=2)
-        canvas.create_arc(470, 10, 510, 50, start=270, extent=180, style=tk.ARC, width=2)
+        # Draw rounded rectangle (bubble) with filled corners
+        r = 25  # corner radius
+        # Main body
+        #canvas.create_rectangle(30+r, 10, 490-r, 80, width=0, fill="#f8f8f8", outline="")
+        #canvas.create_rectangle(30, 10+r, 490, 80-r, width=0, fill="#f8f8f8", outline="")
+        # Four corners
+        #canvas.create_arc(30, 10, 30+2*r, 10+2*r, start=90, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
+        #canvas.create_arc(490-2*r, 10, 490, 10+2*r, start=0, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
+        #canvas.create_arc(30, 80-2*r, 30+2*r, 80, start=180, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
+        #canvas.create_arc(490-2*r, 80-2*r, 490, 80, start=270, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
+        # Outline for rounded rectangle
+        canvas.create_arc(30, 10, 30+2*r, 10+2*r, start=90, extent=90, style=tk.ARC, width=2, outline="#333")
+        canvas.create_arc(490-2*r, 10, 490, 10+2*r, start=0, extent=90, style=tk.ARC, width=2, outline="#333")
+        canvas.create_arc(30, 80-2*r, 30+2*r, 80, start=180, extent=90, style=tk.ARC, width=2, outline="#333")
+        canvas.create_arc(490-2*r, 80-2*r, 490, 80, start=270, extent=90, style=tk.ARC, width=2, outline="#333")
+        canvas.create_line(30+r, 10, 490-r, 10, fill="#333", width=2)
+        canvas.create_line(30+r, 80, 490-r, 80, fill="#333", width=2)
+        canvas.create_line(30, 10+r, 30, 80-r, fill="#333", width=2)
+        canvas.create_line(490, 10+r, 490, 80-r, fill="#333", width=2)
         # Draw tail (triangle)
-        canvas.create_polygon(30, 90, 10, 110, 50, 110, fill="white", outline="black", width=2)
+        canvas.create_polygon(60, 80, 80, 100, 100, 80, fill="#f8f8f8", outline="#333", width=2)
         # Time label (dots and dashes)
-        canvas.create_text(470, 100, text=". . :\n_ _ - _ _", font=("Courier", 12), anchor="se")
+        canvas.create_text(470, 95, text="_ _:_ _", font=("Courier", 14), anchor="se")
 
 def block_apps():
     messagebox.showinfo("App Blocking", f"Apps will be blocked from {declare_times['sleep']} to {declare_times['wake']}.")
@@ -148,36 +195,44 @@ def open_clock_screen(container, home_screen):
     back_btn = tk.Button(clock_screen, text="←", bg="#df43c8", font=("Arial", 16), command=go_back)
     back_btn.place(x=10, y=10, width=90, height=50)
 
-    fwd_btn = tk.Button(clock_screen, text="→", font=("Arial", 16), state="disabled")
-    fwd_btn.place(x=500, y=10, width=90, height=50)
 
-    canvas = tk.Canvas(clock_screen, width=600, height=500, bg="white", highlightthickness=0)
-    canvas.place(x=0, y=70)
-    canvas.create_oval(50, 20, 550, 520, width=2)
+    # Slightly bigger clock
+    canvas = tk.Canvas(clock_screen, width=420, height=420, highlightthickness=0)
+    canvas.place(x=90, y=60)
+    canvas.create_oval(30, 30, 390, 390, width=2)
+    center_x, center_y = 210, 210
     for i in range(12):
         angle = math.radians(i * 30)
-        x1 = 300 + 220 * math.sin(angle)
-        y1 = 270 - 220 * math.cos(angle)
-        x2 = 300 + 250 * math.sin(angle)
-        y2 = 270 - 250 * math.cos(angle)
+        x1 = center_x + 150 * math.sin(angle)
+        y1 = center_y - 150 * math.cos(angle)
+        x2 = center_x + 180 * math.sin(angle)
+        y2 = center_y - 180 * math.cos(angle)
         canvas.create_line(x1, y1, x2, y2, width=3)
-    canvas.create_line(300, 270, 370, 170, width=10, fill="black", capstyle=tk.ROUND)
-    canvas.create_line(300, 270, 500, 270, width=6, fill="black", capstyle=tk.ROUND)
-    canvas.create_oval(285, 255, 315, 285, fill="black", outline="black")
+    # Hour hand
+    canvas.create_line(center_x, center_y, center_x + 40, center_y - 85, width=4, fill="black", capstyle=tk.ROUND)
+    # Minute hand
+    canvas.create_line(center_x, center_y, center_x + 130, center_y, width=4, fill="black", capstyle=tk.ROUND)
+    # Center dot (smaller)
+    canvas.create_oval(center_x-7, center_y-7, center_x+7, center_y+7, fill="black", outline="black")
 
     wake_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2)
     wake_frame.place(x=60, y=540, width=480, height=60)
     wake_entry = tk.Entry(wake_frame, font=("Arial", 24), width=6, justify="center", bd=0)
-    wake_entry.place(x=10, y=10, width=180, height=40)
-    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Arial", 20), bg="white")
-    wake_label.place(x=250, y=10)
+    #wake_entry.place(x=10, y=10, width=180, height=40)
+    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Arial", 20))
+    wake_label.place(x=355, y=10)
+    # Add time placeholder next to Wake Up
+    wake_time_placeholder = tk.Label(wake_frame, text="_ _:_ _", font=("Courier", 20),)
+    wake_time_placeholder.place(x=70, y=15)
 
     sleep_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2)
     sleep_frame.place(x=60, y=610, width=480, height=60)
     sleep_entry = tk.Entry(sleep_frame, font=("Arial", 24), width=6, justify="center", bd=0)
-    sleep_entry.place(x=10, y=10, width=180, height=40)
-    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Arial", 20), bg="white")
-    sleep_label.place(x=250, y=10)
+    #sleep_entry.place(x=10, y=10, width=180, height=40)
+    sleep_lable_placeholder = tk.Label(sleep_frame, text="_ _:_ _", font=("Courier", 20),)
+    sleep_lable_placeholder.place(x=70, y=15)
+    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Arial", 20))
+    sleep_label.place(x=350, y=10)
 
     def valid_time(t):
         import re
@@ -212,7 +267,7 @@ def main():
     btn_settings = tk.Button(home_screen, text="⚙️", command=open_settings)
     btn_settings.place(x=10, y=10, width=50, height=50)
 
-    btn_profile = tk.Button(home_screen, text="○", command=open_profile)
+    btn_profile = tk.Button(home_screen, text="○", command=lambda: open_profile_screen(container, home_screen))
     btn_profile.place(x=540, y=10, width=50, height=50)
 
     btn_clock = tk.Button(home_screen, text="Clock", font=("Arial", 16),
