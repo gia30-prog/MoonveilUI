@@ -6,13 +6,29 @@ Welcome to Moonveil! This app helps young adults build better sleep habits using
 - **Soundscapes:** Listen to relaxing background sounds to help you fall asleep.
 - **App Blocking:** Limits access to distracting apps during sleep hours.
 - **Home Screen:** Links to settings, user info, soundscapes, reminders, clock, and schedule.
+- **User Profile:** stores users loved soundscapes, tracks users sleep, lists habits users want to start implementing
+
+## How to Run
+1. Make sure you have Python 3.8 or newer installed.
+2. (Optional) Create and activate a virtual environment:
+   ```
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+3. Install any dependencies (if required):
+   ```
+   pip install -r requirements.txt
+   ```
+   (If there is no requirements.txt, you can skip this step.)
+4. Run the main app:
+   ```
+   python HomescreenUI_clean.py
+   ```
 
 ## How to Use
 1. Clone this repository to your computer.
 2. Open the project in VS Code.
 3. Run the Python files to explore features.
-4. When prompted, use the number keys (1-7) to select options from the menu (for example, 1 for Settings, 2 for User Info, etc.).
-5. Read the code comments to learn how it works.
 
 ## Learning Goals
 - Use functions and variables

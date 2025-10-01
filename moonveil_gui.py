@@ -23,9 +23,11 @@ def play_soundscapes():
 def view_reminders():
     messagebox.showinfo("Reminders", "1. Avoid caffeine after 3 PM\n2. Wind down by 9:30 PM\n3. Put phone away by 10 PM")
 
+#commented out for now, as we have a dedicated clock screen
 def show_clock():
     messagebox.showinfo("Clock", "Current time: [Add real time later]\nBedtime countdown: [Add timer later]")
 def open_clock_screen(root, home_screen):
+    pass
     import math
     # Hide home screen
     home_screen.pack_forget()
