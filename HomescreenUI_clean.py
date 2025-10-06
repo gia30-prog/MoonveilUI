@@ -41,12 +41,12 @@ def open_settings(container, home_screen):
     x_start = 40
     for i, (label, icon) in enumerate(options):
         y = y_start + i * (box_h + 12)
-        frame = tk.Frame(settings_screen, highlightbackground="black", highlightthickness=2)
+        frame = tk.Frame(settings_screen, highlightbackground="black", highlightthickness=2, bg="white")
         frame.place(x=x_start, y=y, width=box_w, height=box_h)
         if label == "LogOut":
-            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", fg="#b94a48")
+            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", fg="#b94a48", bg="white")
         else:
-            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w")
+            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", bg="white")
         lbl.place(x=12, y=10, width=box_w-60, height=box_h-20)
         if icon == ">":
             arrow = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
@@ -113,7 +113,7 @@ def open_profile_screen(container, home_screen):
             row = tk.Frame(soundscapes_area, highlightbackground="black", highlightthickness=2)
             row.place(x=0, y=y, width=520, height=70)
             # Left square (icon placeholder)
-            icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black")
+            icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black", bg="white")
             icon.place(x=8, y=7)
             # Horizontal line (stationary)
             line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0)
@@ -129,14 +129,17 @@ def open_profile_screen(container, home_screen):
             right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
             right1.place(x=470, y=10)
             right1.create_oval(2, 2, 22, 22, width=2)
-            right1.create_oval(11, 6, 13, 8, fill="white")
+            right1.create_oval(11, 5, 13, 7, fill="white")
             right1.create_oval(11, 10, 13, 12, fill="white")
-            right1.create_oval(11, 14, 13, 16, fill="white")
+            right1.create_oval(11, 15, 13, 17, fill="white")
             right1.create_line(9, 15, 12, 20, fill="black", width=1)
             right1.create_line(15, 15, 12, 20, fill="black", width=1)
             right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
             right2.place(x=470, y=38)
-            right2.create_oval(2, 2, 22, 22, width=2)
+            # Draw a heart shape
+            right2.create_oval(4, 4, 12, 14, fill="#b94a48", outline="")
+            right2.create_oval(12, 4, 20, 14, fill="#b94a48", outline="")
+            right2.create_polygon(4, 10, 12, 22, 20, 10, fill="#b94a48", outline="")
 
     def show_sleep_tracker():
         # Clear area first
@@ -212,14 +215,14 @@ def open_soundscapes(container, home_screen):
     back_btn.create_line(30, 25, 45, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
     back_btn.bind("<Button-1>", lambda e: go_back())
 
-    # Draw 8 soundscape rows as in the wireframe
+    filled_indices = {0, 3, 7}
     for i in range(8):
         y = 80 + i * 80
         row = tk.Frame(sound_screen, highlightbackground="black", highlightthickness=2, bg="#e99d75")
         row.place(x=40, y=y, width=520, height=70)
 
         # Left square (icon placeholder)
-        icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black")
+        icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black", bg="white")
         icon.place(x=8, y=7)
 
         # Horizontal line (stationary)
@@ -237,21 +240,31 @@ def open_soundscapes(container, home_screen):
         play_canvas.create_rectangle(40, 7, 45, 23, fill="#f5b928", outline="")
 
         # Two smaller circles on the right, vertically aligned
-        right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+        right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0, bg="#e99d75")
         right1.place(x=470, y=10)
-        right1.create_oval(2, 2, 22, 22, width=2)
+        right1.create_oval(1, 1, 23, 23, width=1, fill="black", outline="black")
         # Dotted arrow pointing down
         # Dots
-        right1.create_oval(11, 6, 13, 8, fill="white")
-        right1.create_oval(11, 10, 13, 12, fill="white")
-        right1.create_oval(11, 14, 13, 16, fill="white")
+        right1.create_oval(10, 5, 14, 9, fill="white")
+        right1.create_oval(10, 9, 14, 13, fill="white")
+        right1.create_oval(10, 13, 14, 17, fill="white")
         # Arrow head
-        right1.create_line(9, 15, 12, 20, fill="black", width=1)
-        right1.create_line(15, 15, 12, 20, fill="black", width=1)
+        right1.create_line(8, 16, 12, 20, fill="white", width=1)
+        right1.create_line(16, 16, 12, 20, fill="white", width=1)
 
-        right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+        right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0, bg="#e99d75")
         right2.place(x=470, y=38)
-        right2.create_oval(2, 2, 22, 22, width=2)
+        # Draw a heart shape
+        if i in filled_indices:
+            # Filled heart
+            right2.create_oval(4, 4, 13, 14, fill="#b94a48", outline="")
+            right2.create_oval(11, 4, 20, 14, fill="#b94a48", outline="")
+            right2.create_polygon(4, 11, 12, 22, 20, 11, fill="#b94a48", outline="")
+        else:
+            # Unfilled heart (filled white with colored outline)
+            right2.create_oval(4, 4, 13, 14, fill="white", outline="#fff", width=2)
+            right2.create_oval(11, 4, 20, 14, fill="white", outline="#fff", width=2)
+            right2.create_polygon(4, 11, 12, 22, 20, 11, fill="white", outline="#fff", width=2)
         #right2.create_arc(6, 10, 18, 20, start=0, extent=270, style=tk.ARC, width=2)
         #right2.create_line(16, 16, 20, 12, width=2)
 
@@ -274,15 +287,15 @@ def open_schedule(container, home_screen):
     # Draw 10 schedule rows as in the wireframe (with lines and dots)
     for i in range(10):
         y = 80 + i * 70
-        row = tk.Frame(schedule_screen, highlightbackground="black", highlightthickness=2)
+        row = tk.Frame(schedule_screen, highlightbackground="black", highlightthickness=2, bg="white")
         row.place(x=40, y=y, width=520, height=60)
 
         # Left: label with lines and dots (time placeholder)
-        label = tk.Label(row, text="\n_ _:_ _", font=("Courier", 16), justify="left")
+        label = tk.Label(row, text="\n_ _:_ _", font=("Courier", 16), justify="left", bg="white")
         label.place(x=10, y=5)
 
         # Right: main square (checkbox placeholder)
-        box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black")
+        box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black", bg="white")
         box.place(x=470, y=12)
         #box.create_rectangle(2, 2, 28, 28, width=2)
 
@@ -314,25 +327,21 @@ def open_reminders(container, home_screen):
         canvas.place(x=40, y=y)
         # Draw rounded rectangle (bubble) with filled corners
         r = 25  # corner radius
-        # Main body
-        #canvas.create_rectangle(30+r, 10, 490-r, 80, width=0, fill="#f8f8f8", outline="")
-        #canvas.create_rectangle(30, 10+r, 490, 80-r, width=0, fill="#f8f8f8", outline="")
-        # Four corners
-        #canvas.create_arc(30, 10, 30+2*r, 10+2*r, start=90, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
-        #canvas.create_arc(490-2*r, 10, 490, 10+2*r, start=0, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
-        #canvas.create_arc(30, 80-2*r, 30+2*r, 80, start=180, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
-        #canvas.create_arc(490-2*r, 80-2*r, 490, 80, start=270, extent=90, style=tk.PIESLICE, width=0, fill="#f8f8f8")
-        # Outline for rounded rectangle
         canvas.create_arc(30, 10, 30+2*r, 10+2*r, start=90, extent=90, style=tk.ARC, width=2, outline="#333")
         canvas.create_arc(490-2*r, 10, 490, 10+2*r, start=0, extent=90, style=tk.ARC, width=2, outline="#333")
         canvas.create_arc(30, 80-2*r, 30+2*r, 80, start=180, extent=90, style=tk.ARC, width=2, outline="#333")
         canvas.create_arc(490-2*r, 80-2*r, 490, 80, start=270, extent=90, style=tk.ARC, width=2, outline="#333")
         canvas.create_line(30+r, 10, 490-r, 10, fill="#333", width=2)
-        canvas.create_line(30+r, 80, 490-r, 80, fill="#333", width=2)
+        # Split bottom line for speech bubble tail
+        # Left segment: from left arc end to left side of tail
+        canvas.create_line(30+r, 80, 70, 80, fill="#333", width=2)
+        # Right segment: from right side of tail to right arc end
+        canvas.create_line(100, 80, 490-r, 80, fill="#333", width=2)
         canvas.create_line(30, 10+r, 30, 80-r, fill="#333", width=2)
         canvas.create_line(490, 10+r, 490, 80-r, fill="#333", width=2)
-        # Draw tail (triangle)
-        canvas.create_polygon(70, 80, 85, 100, 100, 80, fill="#f8f8f8", outline="#333", width=2)
+        # Draw tail as an arrow with two lines
+        canvas.create_line(69, 80, 85, 95, fill="#333", width=2)
+        canvas.create_line(101, 80, 85, 95, fill="#333", width=2)
         # Time label (dots and dashes)
         canvas.create_text(470, 95, text="_ _:_ _", font=("Courier", 14), anchor="se")
 
@@ -376,23 +385,23 @@ def open_clock_screen(container, home_screen):
     # Center dot (smaller)
     canvas.create_oval(center_x-7, center_y-7, center_x+7, center_y+7, fill="black", outline="black")
 
-    wake_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2)
+    wake_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2, bg="white")
     wake_frame.place(x=60, y=540, width=480, height=60)
     wake_entry = tk.Entry(wake_frame, font=("Arial", 24), width=6, justify="center", bd=0)
     #wake_entry.place(x=10, y=10, width=180, height=40)
-    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Arial", 20))
+    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Arial", 20), bg="white")
     wake_label.place(x=355, y=10)
     # Add time placeholder next to Wake Up
-    wake_time_placeholder = tk.Label(wake_frame, text="_ _:_ _", font=("Courier", 20),)
+    wake_time_placeholder = tk.Label(wake_frame, text="_ _:_ _", font=("Courier", 20), bg="white")
     wake_time_placeholder.place(x=70, y=15)
 
-    sleep_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2)
+    sleep_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2, bg="white")
     sleep_frame.place(x=60, y=610, width=480, height=60)
     sleep_entry = tk.Entry(sleep_frame, font=("Arial", 24), width=6, justify="center", bd=0)
     #sleep_entry.place(x=10, y=10, width=180, height=40)
-    sleep_lable_placeholder = tk.Label(sleep_frame, text="_ _:_ _", font=("Courier", 20),)
+    sleep_lable_placeholder = tk.Label(sleep_frame, text="_ _:_ _", font=("Courier", 20), bg="white")
     sleep_lable_placeholder.place(x=70, y=15)
-    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Arial", 20))
+    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Arial", 20), bg="white")
     sleep_label.place(x=350, y=10)
 
     def valid_time(t):
