@@ -7,7 +7,7 @@ import math
 declare_times = {"wake": "", "sleep": ""}
 
 def open_settings(container, home_screen):
-    settings_screen = tk.Frame(container)
+    settings_screen = tk.Frame(container, bg="#ffefc5")
     settings_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     settings_screen.lift()
 
@@ -16,8 +16,13 @@ def open_settings(container, home_screen):
         home_screen.lift()
 
     # Back button (top left)
-    back_btn = tk.Button(settings_screen, text="←", font=("Arial", 20), command=go_back)
-    back_btn.place(x=10, y=10, width=110, height=50)
+    back_btn = tk.Canvas(settings_screen, width=110, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    # Draw colored arrow
+    back_btn.create_line(35, 25, 75, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(35, 25, 50, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(35, 25, 50, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
     # Settings options
     options = [
@@ -38,14 +43,17 @@ def open_settings(container, home_screen):
         y = y_start + i * (box_h + 12)
         frame = tk.Frame(settings_screen, highlightbackground="black", highlightthickness=2)
         frame.place(x=x_start, y=y, width=box_w, height=box_h)
-        lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w")
+        if label == "LogOut":
+            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", fg="#b94a48")
+        else:
+            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w")
         lbl.place(x=12, y=10, width=box_w-60, height=box_h-20)
         if icon == ">":
             arrow = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
             arrow.place(x=box_w-50, y=10)
-            # Draw a sharp arrowhead where both lines meet at (32,20)
-            arrow.create_line(12, 10, 32, 20, width=4, capstyle=tk.ROUND)
-            arrow.create_line(12, 30, 32, 20, width=4, capstyle=tk.ROUND)
+            # Draw a sharp arrowhead where both lines meet at (32,20), color #cd725d
+            arrow.create_line(12, 10, 32, 20, width=4, capstyle=tk.ROUND, fill="#cd725d")
+            arrow.create_line(12, 30, 32, 20, width=4, capstyle=tk.ROUND, fill="#cd725d")
         elif icon == "circle":
             circ = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
             circ.place(x=box_w-50, y=10)
@@ -56,7 +64,7 @@ def open_profile():
     pass
 
 def open_profile_screen(container, home_screen):
-    profile_screen = tk.Frame(container)
+    profile_screen = tk.Frame(container, bg="#ffefc5")
     profile_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     profile_screen.lift()
 
@@ -65,8 +73,12 @@ def open_profile_screen(container, home_screen):
         home_screen.lift()
 
     # Back button (top left)
-    back_btn = tk.Button(profile_screen, text="←", font=("Arial", 20), command=go_back)
-    back_btn.place(x=10, y=10, width=110, height=50)
+    back_btn = tk.Canvas(profile_screen, width=110, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    back_btn.create_line(35, 25, 75, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(35, 25, 50, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(35, 25, 50, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
 
     # Slightly smaller circle in the center
@@ -87,7 +99,7 @@ def open_profile_screen(container, home_screen):
 
     # Area to fill with soundscapes/habits/graph when a nav button is clicked (now below nav bar)
     soundscapes_area_height = 420
-    soundscapes_area = tk.Frame(profile_screen, width=520, height=soundscapes_area_height)
+    soundscapes_area = tk.Frame(profile_screen, width=520, height=soundscapes_area_height, bg="#ffefc5")
     soundscapes_area.place(x=40, y=nav_y+nav_h+10, width=520, height=soundscapes_area_height)
 
 
@@ -185,7 +197,7 @@ def open_profile_screen(container, home_screen):
     btn3.place(x=2*nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
 
 def open_soundscapes(container, home_screen):
-    sound_screen = tk.Frame(container)
+    sound_screen = tk.Frame(container, bg="#ffefc5")
     sound_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     sound_screen.lift()
 
@@ -193,13 +205,17 @@ def open_soundscapes(container, home_screen):
         sound_screen.destroy()
         home_screen.lift()
 
-    back_btn = tk.Button(sound_screen, text="←", font=("Arial", 20), command=go_back)
-    back_btn.place(x=10, y=10, width=90, height=50)
+    back_btn = tk.Canvas(sound_screen, width=90, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    back_btn.create_line(30, 25, 70, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
     # Draw 8 soundscape rows as in the wireframe
     for i in range(8):
         y = 80 + i * 80
-        row = tk.Frame(sound_screen, highlightbackground="black", highlightthickness=2)
+        row = tk.Frame(sound_screen, highlightbackground="black", highlightthickness=2, bg="#e99d75")
         row.place(x=40, y=y, width=520, height=70)
 
         # Left square (icon placeholder)
@@ -207,18 +223,18 @@ def open_soundscapes(container, home_screen):
         icon.place(x=8, y=7)
 
         # Horizontal line (stationary)
-        line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0,)
+        line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0, bg="#e99d75")
         line_canvas.place(x=70, y=30)
-        line_canvas.create_line(0, 5, 200, 5, width=3)
+        line_canvas.create_line(0, 5, 200, 5, width=3, fill="#f5b928")
 
         # Play/pause button (stationary, not overlapping)
-        play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0)
+        play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0, bg="#e99d75")
         play_canvas.place(x=150, y=38)
         # Play triangle (left)
-        play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="black")
-        # Pause bars (right, spaced apart)
-        play_canvas.create_rectangle(32, 7, 37, 23, fill="black")
-        play_canvas.create_rectangle(40, 7, 45, 23, fill="black")
+        play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="#f5b928")
+        # Pause bars (right, spaced apart, no outline)
+        play_canvas.create_rectangle(32, 7, 37, 23, fill="#f5b928", outline="")
+        play_canvas.create_rectangle(40, 7, 45, 23, fill="#f5b928", outline="")
 
         # Two smaller circles on the right, vertically aligned
         right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
@@ -240,7 +256,7 @@ def open_soundscapes(container, home_screen):
         #right2.create_line(16, 16, 20, 12, width=2)
 
 def open_schedule(container, home_screen):
-    schedule_screen = tk.Frame(container)
+    schedule_screen = tk.Frame(container, bg="#ffefc5")
     schedule_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     schedule_screen.lift()
 
@@ -248,8 +264,12 @@ def open_schedule(container, home_screen):
         schedule_screen.destroy()
         home_screen.lift()
 
-    back_btn = tk.Button(schedule_screen, text="←", font=("Arial", 20), command=go_back)
-    back_btn.place(x=10, y=10, width=90, height=50)
+    back_btn = tk.Canvas(schedule_screen, width=90, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    back_btn.create_line(30, 25, 70, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
     # Draw 10 schedule rows as in the wireframe (with lines and dots)
     for i in range(10):
@@ -272,7 +292,7 @@ def open_schedule(container, home_screen):
         #small_box.create_rectangle(2, 2, 14, 14, width=2)
 
 def open_reminders(container, home_screen):
-    reminders_screen = tk.Frame(container)
+    reminders_screen = tk.Frame(container, bg="#ffefc5")
     reminders_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     reminders_screen.lift()
 
@@ -280,8 +300,12 @@ def open_reminders(container, home_screen):
         reminders_screen.destroy()
         home_screen.lift()
 
-    back_btn = tk.Button(reminders_screen, text="←", font=("Arial", 20), command=go_back)
-    back_btn.place(x=10, y=10, width=90, height=50)
+    back_btn = tk.Canvas(reminders_screen, width=90, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    back_btn.create_line(30, 25, 70, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
     # Draw 4 speech bubble reminders as text message bubbles
     for i in range(4):
@@ -308,7 +332,7 @@ def open_reminders(container, home_screen):
         canvas.create_line(30, 10+r, 30, 80-r, fill="#333", width=2)
         canvas.create_line(490, 10+r, 490, 80-r, fill="#333", width=2)
         # Draw tail (triangle)
-        canvas.create_polygon(60, 80, 80, 100, 100, 80, fill="#f8f8f8", outline="#333", width=2)
+        canvas.create_polygon(70, 80, 85, 100, 100, 80, fill="#f8f8f8", outline="#333", width=2)
         # Time label (dots and dashes)
         canvas.create_text(470, 95, text="_ _:_ _", font=("Courier", 14), anchor="se")
 
@@ -317,21 +341,26 @@ def block_apps():
 
 
 def open_clock_screen(container, home_screen):
-    clock_screen = tk.Frame(container)
+    clock_screen = tk.Frame(container, bg="#ffefc5")
     clock_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
     clock_screen.lift()
 
     def go_back():
         clock_screen.destroy()
         home_screen.lift()
-    back_btn = tk.Button(clock_screen, text="←", bg="#df43c8", font=("Arial", 16), command=go_back)
-    back_btn.place(x=10, y=10, width=90, height=50)
+    back_btn = tk.Canvas(clock_screen, width=90, height=50, bg="#e0dcaa", highlightthickness=0)
+    back_btn.place(x=10, y=10)
+    back_btn.create_line(30, 25, 70, 25, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 15, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.create_line(30, 25, 45, 35, width=5, fill="#cd725d", capstyle=tk.ROUND)
+    back_btn.bind("<Button-1>", lambda e: go_back())
 
 
     # Slightly bigger clock
-    canvas = tk.Canvas(clock_screen, width=420, height=420, highlightthickness=0)
+    canvas = tk.Canvas(clock_screen, width=420, height=420, highlightthickness=0, bg="#ffefc5")
     canvas.place(x=90, y=60)
-    canvas.create_oval(30, 30, 390, 390, width=2)
+    # Draw only the outline of the clock, not a filled oval
+    canvas.create_oval(30, 30, 390, 390, width=2, outline="black", fill="#f8f8f8")
     center_x, center_y = 210, 210
     for i in range(12):
         angle = math.radians(i * 30)
@@ -393,7 +422,7 @@ def main():
     container = tk.Frame(root)
     container.pack(fill="both", expand=True)
 
-    home_screen = tk.Frame(container)
+    home_screen = tk.Frame(container, bg="#ffefc5")
     home_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
 
     btn_settings = tk.Button(home_screen, text="⚙️", command=lambda: open_settings(container, home_screen))
