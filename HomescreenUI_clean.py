@@ -14,6 +14,8 @@ def open_settings(container, home_screen):
     def go_back():
         settings_screen.destroy()
         home_screen.lift()
+        if hasattr(home_screen, 'draw_home_boxes'):
+            home_screen.draw_home_boxes()
 
     # Back button (top left)
     back_btn = tk.Canvas(settings_screen, width=110, height=50, bg="#e0dcaa", highlightthickness=0)
@@ -85,9 +87,12 @@ def open_profile_screen(container, home_screen):
     circle_diam = 320
     # Add padding to ensure the oval is not clipped by the canvas border
     pad = 8
-    canvas = tk.Canvas(profile_screen, width=circle_diam+2*pad, height=circle_diam+2*pad, highlightthickness=0)
+    canvas = tk.Canvas(profile_screen, width=circle_diam+2*pad, height=circle_diam+2*pad, highlightthickness=0, bg="#ffefc5")
     canvas.place(x=(600-circle_diam)//2 - pad, y=90 - pad)
-    canvas.create_oval(pad, pad, circle_diam+pad, circle_diam+pad, width=2)
+    # Fill the whole canvas with #ffefc5
+    canvas.create_rectangle(0, 0, circle_diam+2*pad, circle_diam+2*pad, fill="#ffefc5", outline="")
+    # Draw a white-filled circle with #ffefc5 outline
+    canvas.create_oval(pad, pad, circle_diam+pad, circle_diam+pad, width=2, outline="#ffefc5", fill="white")
 
     # Bottom navigation bar with three buttons
     nav_y = 480
@@ -107,39 +112,38 @@ def open_profile_screen(container, home_screen):
         # Clear area first
         for widget in soundscapes_area.winfo_children():
             widget.destroy()
-        # Draw 5 soundscape rows as in the wireframe
         for i in range(5):
             y = i * 80
-            row = tk.Frame(soundscapes_area, highlightbackground="black", highlightthickness=2)
+            row = tk.Frame(soundscapes_area, highlightbackground="black", highlightthickness=2, bg="#e99d75")
             row.place(x=0, y=y, width=520, height=70)
             # Left square (icon placeholder)
             icon = tk.Canvas(row, width=50, height=50, highlightthickness=1, highlightbackground="black", bg="white")
             icon.place(x=8, y=7)
             # Horizontal line (stationary)
-            line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0)
+            line_canvas = tk.Canvas(row, width=200, height=10, highlightthickness=0, bg="#e99d75")
             line_canvas.place(x=70, y=30)
-            line_canvas.create_line(0, 5, 200, 5, width=3)
+            line_canvas.create_line(0, 5, 200, 5, width=3, fill="#f5b928")
             # Play/pause button (stationary, not overlapping)
-            play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0)
+            play_canvas = tk.Canvas(row, width=50, height=25, highlightthickness=0, bg="#e99d75")
             play_canvas.place(x=150, y=38)
-            play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="black")
-            play_canvas.create_rectangle(32, 7, 37, 23, fill="black")
-            play_canvas.create_rectangle(40, 7, 45, 23, fill="black")
+            play_canvas.create_polygon(5, 7, 25, 15, 5, 23, fill="#f5b928")
+            play_canvas.create_rectangle(32, 7, 37, 23, fill="#f5b928", outline="")
+            play_canvas.create_rectangle(40, 7, 45, 23, fill="#f5b928", outline="")
             # Two smaller circles on the right, vertically aligned
-            right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+            right1 = tk.Canvas(row, width=24, height=24, highlightthickness=0, bg="#e99d75")
             right1.place(x=470, y=10)
-            right1.create_oval(2, 2, 22, 22, width=2)
-            right1.create_oval(11, 5, 13, 7, fill="white")
-            right1.create_oval(11, 10, 13, 12, fill="white")
-            right1.create_oval(11, 15, 13, 17, fill="white")
-            right1.create_line(9, 15, 12, 20, fill="black", width=1)
-            right1.create_line(15, 15, 12, 20, fill="black", width=1)
-            right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0)
+            right1.create_oval(1, 1, 23, 23, width=1, fill="black", outline="black")
+            right1.create_oval(10, 5, 14, 9, fill="white")
+            right1.create_oval(10, 9, 14, 13, fill="white")
+            right1.create_oval(10, 13, 14, 17, fill="white")
+            right1.create_line(8, 16, 12, 20, fill="white", width=1)
+            right1.create_line(16, 16, 12, 20, fill="white", width=1)
+            right2 = tk.Canvas(row, width=24, height=24, highlightthickness=0, bg="#e99d75")
             right2.place(x=470, y=38)
-            # Draw a heart shape
-            right2.create_oval(4, 4, 12, 14, fill="#b94a48", outline="")
-            right2.create_oval(12, 4, 20, 14, fill="#b94a48", outline="")
-            right2.create_polygon(4, 10, 12, 22, 20, 10, fill="#b94a48", outline="")
+            # Draw a heart shape (always filled #b94a48)
+            right2.create_oval(4, 4, 13, 14, fill="#b94a48", outline="")
+            right2.create_oval(11, 4, 20, 14, fill="#b94a48", outline="")
+            right2.create_polygon(4, 11, 12, 22, 20, 11, fill="#b94a48", outline="")
 
     def show_sleep_tracker():
         # Clear area first
@@ -178,6 +182,7 @@ def open_profile_screen(container, home_screen):
         # Clear area first
         for widget in soundscapes_area.winfo_children():
             widget.destroy()
+        soundscapes_area.config(bg="#ffefc5")
         # Example list of habits
         habits = [
             "Go to bed before 11pm",
@@ -186,18 +191,28 @@ def open_profile_screen(container, home_screen):
             "Meditate before sleep",
             "Wake up at the same time"
         ]
-        habits_label = tk.Label(soundscapes_area, text="Your Habits to Implement:", font=("Arial", 16, "bold"))
+        habits_label = tk.Label(soundscapes_area, text="Your Habits to Implement:", font=("Arial", 16, "bold"), bg="#ffefc5")
         habits_label.place(x=20, y=10)
         for i, habit in enumerate(habits):
-            habit_label = tk.Label(soundscapes_area, text="• " + habit, font=("Arial", 14), anchor="w", justify="left")
+            habit_label = tk.Label(soundscapes_area, text="• " + habit, font=("Arial", 14), anchor="w", justify="left", bg="#ffefc5")
             habit_label.place(x=40, y=50 + i*36)
 
-    btn1 = tk.Button(nav_frame, text="Favorite sounds", font=("Arial", 16), command=show_favorite_sounds)
-    btn1.place(x=0, y=0, width=nav_btn_w, height=nav_h)
-    btn2 = tk.Button(nav_frame, text="Sleep Tracker", font=("Arial", 16), command=show_sleep_tracker)
-    btn2.place(x=nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
-    btn3 = tk.Button(nav_frame, text="Habits", font=("Arial", 16), command=show_habits)
-    btn3.place(x=2*nav_btn_w, y=0, width=nav_btn_w, height=nav_h)
+    # Clickable colored box for Favorite sounds
+    fav_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#e99d75", highlightthickness=0)
+    fav_box.place(x=0, y=0)
+    fav_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#e99d75", outline="#cd725d", width=3)
+    fav_box.create_text(nav_btn_w//2, nav_h//2, text="Favorite sounds", font=("Arial", 16), fill="black")
+    fav_box.bind("<Button-1>", lambda e: show_favorite_sounds())
+    sleep_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#e0dcaa", highlightthickness=0)
+    sleep_box.place(x=nav_btn_w, y=0)
+    sleep_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#e0dcaa", outline="#cd725d", width=3)
+    sleep_box.create_text(nav_btn_w//2, nav_h//2, text="Sleep Tracker", font=("Arial", 16), fill="black")
+    sleep_box.bind("<Button-1>", lambda e: show_sleep_tracker())
+    habits_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#f5b928", highlightthickness=0)
+    habits_box.place(x=2*nav_btn_w, y=0)
+    habits_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#f5b928", outline="#cd725d", width=3)
+    habits_box.create_text(nav_btn_w//2, nav_h//2, text="Habits", font=("Arial", 16), fill="black")
+    habits_box.bind("<Button-1>", lambda e: show_habits())
 
 def open_soundscapes(container, home_screen):
     sound_screen = tk.Frame(container, bg="#ffefc5")
@@ -291,18 +306,82 @@ def open_schedule(container, home_screen):
         row.place(x=40, y=y, width=520, height=60)
 
         # Left: label with lines and dots (time placeholder)
-        label = tk.Label(row, text="\n_ _:_ _", font=("Courier", 16), justify="left", bg="white")
-        label.place(x=10, y=5)
+        if i == 0:
+            label = tk.Label(row, text="8:00am", font=("Courier", 30), justify="left", bg="white")
+        elif i == 1:
+            label = tk.Label(row, text="10:00am", font=("Courier", 30), justify="left", bg="white")
+        elif i == 2:
+            label = tk.Label(row, text="12:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 3:
+            label = tk.Label(row, text="2:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 4:
+            label = tk.Label(row, text="4:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 5:
+            label = tk.Label(row, text="5:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 6:
+            label = tk.Label(row, text="6:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 7:
+            label = tk.Label(row, text="8:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 8:
+            label = tk.Label(row, text="9:00pm", font=("Courier", 30), justify="left", bg="white")
+        elif i == 9:
+            label = tk.Label(row, text="11:00pm", font=("Courier", 30), justify="left", bg="white")
+        label.place(x=10, y=9)
 
         # Right: main square (checkbox placeholder)
-        box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black", bg="white")
+        box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="white", bg="white")
         box.place(x=470, y=12)
-        #box.create_rectangle(2, 2, 28, 28, width=2)
+        # Draw the rectangle, fill #cd725d for box seven (i==6) and nine (i==8), else white
+        if i == 6 or i == 8:
+            box.create_rectangle(2, 2, 28, 28, width=2, fill="#cd725d", outline="#cd725d")
+        else:
+            box.create_rectangle(2, 2, 28, 28, width=2, fill="white", outline="black")
+
+        # Add a separate transparent Text widget for each schedule row
+        if i == 0:
+            text_box_1 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_1.place(x=124, y=16, width=320, height=30)
+        elif i == 1:
+            text_box_2 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_2.place(x=142, y=16, width=300, height=30)
+        elif i == 2:
+            text_box_3 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_3.place(x=142, y=16, width=300, height=30)
+        elif i == 3:
+            text_box_4 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_4.place(x=124, y=16, width=320, height=30)
+        elif i == 4:
+            text_box_5 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_5.place(x=124, y=16, width=320, height=30)
+        elif i == 5:
+            text_box_6 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_6.place(x=124, y=16, width=320, height=30)
+        elif i == 6:
+            text_box_7 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_7.place(x=124, y=16, width=320, height=30)
+        elif i == 7:
+            text_box_8 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_8.place(x=124, y=16, width=320, height=30)
+        elif i == 8:
+            text_box_9 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_9.place(x=124, y=16, width=320, height=30)
+        elif i == 9:
+            text_box_10 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_10.place(x=142, y=16, width=300, height=30)
+
+        # Add Entry widget for typing in each schedule row
+        #entry = tk.Entry(row, font=("Arial", 14), bg="white", bd=0, relief="flat", highlightthickness=0)
+        #entry.place(x=120, y=15, width=380, height=30)
 
         # Small box in the right corner of the big box
         #small_box = tk.Canvas(row, width=16, height=16,) #highlightthickness=1, #highlightbackground="white")
         #small_box.place(x=500, y=10)
         #small_box.create_rectangle(2, 2, 14, 14, width=2)
+
+        # Right: main square (checkbox placeholder)
+        #box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="black", bg="white")
+        #box.place(x=470, y=12)
+        #box.create_rectangle(2, 2, 28, 28, width=2)
 
 def open_reminders(container, home_screen):
     reminders_screen = tk.Frame(container, bg="#ffefc5")
@@ -434,23 +513,71 @@ def main():
     home_screen = tk.Frame(container, bg="#ffefc5")
     home_screen.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-    btn_settings = tk.Button(home_screen, text="⚙️", command=lambda: open_settings(container, home_screen))
-    btn_settings.place(x=10, y=10, width=50, height=50)
+    # Custom settings button with #e0dcaa background and #cd725d cog
+    settings_canvas = tk.Canvas(home_screen, width=50, height=50, bg="#e0dcaa", highlightthickness=0)
+    settings_canvas.place(x=10, y=10)
+    # Draw cog (simple gear shape)
+    center_x, center_y, r = 25, 25, 13
+    for angle in range(0, 360, 45):
+        x1 = center_x + r * math.cos(math.radians(angle))
+        y1 = center_y + r * math.sin(math.radians(angle))
+        x2 = center_x + (r+7) * math.cos(math.radians(angle))
+        y2 = center_y + (r+7) * math.sin(math.radians(angle))
+        settings_canvas.create_line(x1, y1, x2, y2, width=4, fill="#cd725d")
+    settings_canvas.create_oval(center_x-r, center_y-r, center_x+r, center_y+r, outline="#cd725d", width=4)
+    settings_canvas.create_oval(center_x-5, center_y-5, center_x+5, center_y+5, fill="#cd725d", outline="")
+    settings_canvas.bind("<Button-1>", lambda e: open_settings(container, home_screen))
 
-    btn_profile = tk.Button(home_screen, text="○", command=lambda: open_profile_screen(container, home_screen))
-    btn_profile.place(x=540, y=10, width=50, height=50)
+    # Custom profile button with #e0dcaa background
+    profile_canvas = tk.Canvas(home_screen, width=50, height=50, bg="#e0dcaa", highlightthickness=0)
+    profile_canvas.place(x=540, y=10)
+    # Draw user icon (circle)
+    profile_canvas.create_oval(10, 10, 40, 40, outline="#cd725d", width=4)
+    #profile_canvas.create_oval(20, 20, 30, 30, fill="#cd725d", outline="")
+    profile_canvas.bind("<Button-1>", lambda e: open_profile_screen(container, home_screen))
 
-    btn_clock = tk.Button(home_screen, text="Clock", font=("Arial", 16),
-                          command=lambda: open_clock_screen(container, home_screen))
-    btn_clock.place(x=90, y=150, width=180, height=180)
+    # Four big buttons with white background and horizontal #e99d75 line
+    def add_button_with_line(parent, text, x, y, command):
+        frame = tk.Frame(parent, bg="white", highlightbackground="#e99d75", highlightthickness=0)
+        frame.place(x=x, y=y, width=180, height=180)
+        btn = tk.Button(frame, text=text, font=("Arial", 16), bg="white", relief="flat", command=command)
+        btn.place(x=0, y=0, width=180, height=180)
+        line = tk.Canvas(frame, width=180, height=40, bg="white", highlightthickness=0)
+        line.place(x=0, y=70)
+        line_id = line.create_line(0, 20, 180, 20, width=38, fill="#e99d75")
+        def on_line_click(event):
+            command()
+        line.tag_bind(line_id, '<Button-1>', on_line_click)
+        # Add Entry (text box) on top of the line
+        entry = tk.Entry(frame, font=("Arial", 16), bg="#e99d75", fg="black", bd=0, highlightthickness=0, relief="flat", justify="center")
+        entry.place(x=20, y=78, width=140, height=28)
+        return btn
 
-    btn_sound = tk.Button(home_screen, text="Soundscapes", font=("Arial", 16), command=lambda: open_soundscapes(container, home_screen))
-    btn_sound.place(x=330, y=150, width=180, height=180)
+    def add_box_with_text(parent, text, x, y, command, box_color):
+        box = tk.Canvas(parent, width=180, height=180, bg=box_color, highlightthickness=0)
+        box.place(x=x, y=y)
+        box.create_rectangle(0, 0, 180, 180, fill=box_color, outline="#e99d75", width=0)
+        line_id = box.create_line(0, 90, 180, 90, width=38, fill="#e99d75")
+        box.create_text(90, 90, text=text, font=("Arial", 16, "bold"), fill="black")
+        def on_line_click(event):
+            command()
+        box.tag_bind(line_id, '<Button-1>', on_line_click)
+        box.bind("<Button-1>", lambda e: command())
+        return box
 
-    btn_schedule = tk.Button(home_screen, text="Schedule", font=("Arial", 16), command=lambda: open_schedule(container, home_screen))
-    btn_schedule.place(x=90, y=380, width=180, height=180)
-    btn_reminders = tk.Button(home_screen, text="Reminders", font=("Arial", 16), command=lambda: open_reminders(container, home_screen))
-    btn_reminders.place(x=330, y=380, width=180, height=180)
+    def draw_home_boxes():
+        # Remove any existing boxes (if re-drawing)
+        for widget in home_screen.winfo_children():
+            # Don't destroy settings/profile icons
+            if isinstance(widget, tk.Canvas) and widget not in [settings_canvas, profile_canvas]:
+                widget.destroy()
+        add_box_with_text(home_screen, "Clock", 90, 150, lambda: open_clock_screen(container, home_screen), box_color="white")
+        add_box_with_text(home_screen, "Soundscapes", 330, 150, lambda: open_soundscapes(container, home_screen), box_color="white")
+        add_box_with_text(home_screen, "Schedule", 90, 380, lambda: open_schedule(container, home_screen), box_color="white")
+        add_box_with_text(home_screen, "Reminders", 330, 380, lambda: open_reminders(container, home_screen), box_color="white")
+
+    home_screen.draw_home_boxes = draw_home_boxes
+    draw_home_boxes()
 
     tk.Label(home_screen, text='Home screen').pack()
     home_screen.lift()
