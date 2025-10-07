@@ -46,9 +46,9 @@ def open_settings(container, home_screen):
         frame = tk.Frame(settings_screen, highlightbackground="black", highlightthickness=2, bg="white")
         frame.place(x=x_start, y=y, width=box_w, height=box_h)
         if label == "LogOut":
-            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", fg="#b94a48", bg="white")
+            lbl = tk.Label(frame, text=label, font=("Courier", 18), anchor="w", fg="#b94a48", bg="white")
         else:
-            lbl = tk.Label(frame, text=label, font=("Arial", 18), anchor="w", bg="white")
+            lbl = tk.Label(frame, text=label, font=("Courier", 18), anchor="w", bg="white")
         lbl.place(x=12, y=10, width=box_w-60, height=box_h-20)
         if icon == ">":
             arrow = tk.Canvas(frame, width=40, height=40, highlightthickness=0, bg=frame.cget('bg'))
@@ -171,12 +171,12 @@ def open_profile_screen(container, home_screen):
             y1 = height-margin
             y0 = y1 - (hours/max_sleep)*(height-2*margin)
             graph.create_rectangle(x0, y0, x1, y1, fill="#7ec8e3", outline="#333", width=2)
-            graph.create_text((x0+x1)//2, y1+15, text=days[i], font=("Arial", 12))
-            graph.create_text((x0+x1)//2, y0-10, text=f"{hours}", font=("Arial", 10))
+            graph.create_text((x0+x1)//2, y1+15, text=days[i], font=("Courier", 12))
+            graph.create_text((x0+x1)//2, y0-10, text=f"{hours}", font=("Courier", 10))
         # Y axis labels
         for h in range(0, max_sleep+1, 2):
             y = height-margin - (h/max_sleep)*(height-2*margin)
-            graph.create_text(margin-15, y, text=str(h), font=("Arial", 10))
+            graph.create_text(margin-15, y, text=str(h), font=("Courier", 10))
 
     def show_habits():
         # Clear area first
@@ -191,27 +191,27 @@ def open_profile_screen(container, home_screen):
             "Meditate before sleep",
             "Wake up at the same time"
         ]
-        habits_label = tk.Label(soundscapes_area, text="Your Habits to Implement:", font=("Arial", 16, "bold"), bg="#ffefc5")
+        habits_label = tk.Label(soundscapes_area, text="Your Habits to Implement:", font=("Courier", 16, "bold"), bg="#ffefc5")
         habits_label.place(x=20, y=10)
         for i, habit in enumerate(habits):
-            habit_label = tk.Label(soundscapes_area, text="• " + habit, font=("Arial", 14), anchor="w", justify="left", bg="#ffefc5")
+            habit_label = tk.Label(soundscapes_area, text="• " + habit, font=("Courier", 14), anchor="w", justify="left", bg="#ffefc5")
             habit_label.place(x=40, y=50 + i*36)
 
     # Clickable colored box for Favorite sounds
     fav_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#e99d75", highlightthickness=0)
     fav_box.place(x=0, y=0)
     fav_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#e99d75", outline="#cd725d", width=3)
-    fav_box.create_text(nav_btn_w//2, nav_h//2, text="Favorite sounds", font=("Arial", 16), fill="black")
+    fav_box.create_text(nav_btn_w//2, nav_h//2, text="Favorite sounds", font=("Courier", 16), fill="black")
     fav_box.bind("<Button-1>", lambda e: show_favorite_sounds())
     sleep_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#e0dcaa", highlightthickness=0)
     sleep_box.place(x=nav_btn_w, y=0)
     sleep_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#e0dcaa", outline="#cd725d", width=3)
-    sleep_box.create_text(nav_btn_w//2, nav_h//2, text="Sleep Tracker", font=("Arial", 16), fill="black")
+    sleep_box.create_text(nav_btn_w//2, nav_h//2, text="Sleep Tracker", font=("Courier", 16), fill="black")
     sleep_box.bind("<Button-1>", lambda e: show_sleep_tracker())
     habits_box = tk.Canvas(nav_frame, width=nav_btn_w, height=nav_h, bg="#f5b928", highlightthickness=0)
     habits_box.place(x=2*nav_btn_w, y=0)
     habits_box.create_rectangle(0, 0, nav_btn_w, nav_h, fill="#f5b928", outline="#cd725d", width=3)
-    habits_box.create_text(nav_btn_w//2, nav_h//2, text="Habits", font=("Arial", 16), fill="black")
+    habits_box.create_text(nav_btn_w//2, nav_h//2, text="Habits", font=("Courier", 16), fill="black")
     habits_box.bind("<Button-1>", lambda e: show_habits())
 
 def open_soundscapes(container, home_screen):
@@ -307,70 +307,99 @@ def open_schedule(container, home_screen):
 
         # Left: label with lines and dots (time placeholder)
         if i == 0:
-            label = tk.Label(row, text="8:00am", font=("Courier", 30), justify="left", bg="white")
+            label = tk.Label(row, text="6:30am", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 1:
-            label = tk.Label(row, text="10:00am", font=("Courier", 30), justify="left", bg="white")
+            label = tk.Label(row, text="7:00am", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 2:
-            label = tk.Label(row, text="12:00pm", font=("Courier", 30), justify="left", bg="white")
+            label = tk.Label(row, text="7:30am", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 3:
-            label = tk.Label(row, text="2:00pm", font=("Courier", 30), justify="left", bg="white")
+            label = tk.Label(row, text="12:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=10, y=9)
         elif i == 4:
-            label = tk.Label(row, text="4:00pm", font=("Courier", 30), justify="left", bg="white")
+            label = tk.Label(row, text="2:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 5:
             label = tk.Label(row, text="5:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 6:
             label = tk.Label(row, text="6:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 7:
             label = tk.Label(row, text="8:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 8:
             label = tk.Label(row, text="9:00pm", font=("Courier", 30), justify="left", bg="white")
+            label.place(x=25, y=9)
         elif i == 9:
             label = tk.Label(row, text="11:00pm", font=("Courier", 30), justify="left", bg="white")
-        label.place(x=10, y=9)
+            label.place(x=10, y=9)
 
         # Right: main square (checkbox placeholder)
         box = tk.Canvas(row, width=30, height=30, highlightthickness=1, highlightbackground="white", bg="white")
         box.place(x=470, y=12)
         # Draw the rectangle, fill #cd725d for box seven (i==6) and nine (i==8), else white
-        if i == 6 or i == 8:
+        if i == 5 or i == 8:
             box.create_rectangle(2, 2, 28, 28, width=2, fill="#cd725d", outline="#cd725d")
         else:
             box.create_rectangle(2, 2, 28, 28, width=2, fill="white", outline="black")
 
         # Add a separate transparent Text widget for each schedule row
         if i == 0:
-            text_box_1 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_1.place(x=124, y=16, width=320, height=30)
+            text_box_1 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_1.place(x=145, y=16, width=320, height=30)
+            text_box_1.insert("1.0", "Wake Up")
+            text_box_1.config(state="disabled")
         elif i == 1:
-            text_box_2 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_2.place(x=142, y=16, width=300, height=30)
+            text_box_2 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_2.place(x=145, y=16, width=320, height=30)
+            text_box_2.insert("1.0", "Start using electronics")
+            text_box_2.config(state="disabled")
         elif i == 2:
-            text_box_3 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_3.place(x=142, y=16, width=300, height=30)
+            text_box_3 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_3.place(x=145, y=16, width=300, height=30)
+            text_box_3.insert("1.0", "Breakfast")
+            text_box_3.config(state="disabled")
         elif i == 3:
-            text_box_4 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_4.place(x=124, y=16, width=320, height=30)
+            text_box_4 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_4.place(x=145, y=16, width=320, height=30)
+            text_box_4.insert("1.0", "Lunch")
+            text_box_4.config(state="disabled")
         elif i == 4:
-            text_box_5 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_5.place(x=124, y=16, width=320, height=30)
+            text_box_5 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_5.place(x=145, y=16, width=320, height=30)
+            text_box_5.insert("1.0", "Snack")
+            text_box_5.config(state="disabled")
         elif i == 5:
-            text_box_6 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_6.place(x=124, y=16, width=320, height=30)
+            text_box_6 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_6.place(x=145, y=16, width=320, height=30)
+            text_box_6.insert("1.0", "Last cup of caffeine")
+            text_box_6.config(state="disabled")
         elif i == 6:
-            text_box_7 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_7.place(x=124, y=16, width=320, height=30)
+            text_box_7 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_7.place(x=145, y=16, width=320, height=30)
+            text_box_7.insert("1.0", "Dinner")
+            text_box_7.config(state="disabled")
         elif i == 7:
-            text_box_8 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_8.place(x=124, y=16, width=320, height=30)
+            text_box_8 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_8.place(x=145, y=16, width=320, height=30)
+            text_box_8.insert("1.0", "Limit Blue Light")
+            text_box_8.config(state="disabled")
         elif i == 8:
-            text_box_9 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_9.place(x=124, y=16, width=320, height=30)
+            text_box_9 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_9.place(x=145, y=16, width=320, height=30)
+            text_box_9.insert("1.0", "Stop using electronics")
+            text_box_9.config(state="disabled")
         elif i == 9:
-            text_box_10 = tk.Text(row, font=("Arial", 20), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
-            text_box_10.place(x=142, y=16, width=300, height=30)
+            text_box_10 = tk.Text(row, font=("Courier", 23), bg="white", bd=0, height=2, width=40, relief="flat", highlightthickness=0)
+            text_box_10.place(x=145, y=16, width=300, height=30)
+            text_box_10.insert("1.0", "Go to Sleep")
+            text_box_10.config(state="disabled")
 
         # Add Entry widget for typing in each schedule row
-        #entry = tk.Entry(row, font=("Arial", 14), bg="white", bd=0, relief="flat", highlightthickness=0)
+        #entry = tk.Entry(row, font=("Courier", 14), bg="white", bd=0, relief="flat", highlightthickness=0)
         #entry.place(x=120, y=15, width=380, height=30)
 
         # Small box in the right corner of the big box
@@ -466,22 +495,22 @@ def open_clock_screen(container, home_screen):
 
     wake_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2, bg="white")
     wake_frame.place(x=60, y=540, width=480, height=60)
-    wake_entry = tk.Entry(wake_frame, font=("Arial", 24), width=6, justify="center", bd=0)
+    wake_entry = tk.Entry(wake_frame, font=("Courier", 24), width=6, justify="center", bd=0)
     #wake_entry.place(x=10, y=10, width=180, height=40)
-    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Arial", 20), bg="white")
-    wake_label.place(x=355, y=10)
+    wake_label = tk.Label(wake_frame, text="Wake Up", font=("Courier", 20), bg="white")
+    wake_label.place(x=345, y=13)
     # Add time placeholder next to Wake Up
-    wake_time_placeholder = tk.Label(wake_frame, text="_ _:_ _", font=("Courier", 20), bg="white")
-    wake_time_placeholder.place(x=70, y=15)
+    wake_time_placeholder = tk.Label(wake_frame, text="6:30am", font=("Courier", 40), bg="white")
+    wake_time_placeholder.place(x=70, y=5)
 
     sleep_frame = tk.Frame(clock_screen, highlightbackground="black", highlightthickness=2, bg="white")
     sleep_frame.place(x=60, y=610, width=480, height=60)
-    sleep_entry = tk.Entry(sleep_frame, font=("Arial", 24), width=6, justify="center", bd=0)
+    sleep_entry = tk.Entry(sleep_frame, font=("Courier", 24), width=6, justify="center", bd=0)
     #sleep_entry.place(x=10, y=10, width=180, height=40)
-    sleep_lable_placeholder = tk.Label(sleep_frame, text="_ _:_ _", font=("Courier", 20), bg="white")
-    sleep_lable_placeholder.place(x=70, y=15)
-    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Arial", 20), bg="white")
-    sleep_label.place(x=350, y=10)
+    sleep_lable_placeholder = tk.Label(sleep_frame, text="11:00pm", font=("Courier", 40), bg="white")
+    sleep_lable_placeholder.place(x=50, y=5)
+    sleep_label = tk.Label(sleep_frame, text="Fall Asleep", font=("Courier", 20), bg="white")
+    sleep_label.place(x=320, y=13)
 
     def valid_time(t):
         import re
@@ -497,7 +526,7 @@ def open_clock_screen(container, home_screen):
         declare_times["sleep"] = sleep
         messagebox.showinfo("App Blocking", f"Apps will be blocked from {sleep} to {wake}.")
 
-    save_btn = tk.Button(clock_screen, text="Block Apps During This Time", font=("Arial", 16), command=save_times)
+    save_btn = tk.Button(clock_screen, text="Block Apps During This Time", font=("Courier", 16), command=save_times)
     save_btn.place(x=180, y=690, width=240, height=50)
 
 
@@ -540,7 +569,7 @@ def main():
     def add_button_with_line(parent, text, x, y, command):
         frame = tk.Frame(parent, bg="white", highlightbackground="#e99d75", highlightthickness=0)
         frame.place(x=x, y=y, width=180, height=180)
-        btn = tk.Button(frame, text=text, font=("Arial", 16), bg="white", relief="flat", command=command)
+        btn = tk.Button(frame, text=text, font=("Courier", 16), bg="white", relief="flat", command=command)
         btn.place(x=0, y=0, width=180, height=180)
         line = tk.Canvas(frame, width=180, height=40, bg="white", highlightthickness=0)
         line.place(x=0, y=70)
@@ -549,7 +578,7 @@ def main():
             command()
         line.tag_bind(line_id, '<Button-1>', on_line_click)
         # Add Entry (text box) on top of the line
-        entry = tk.Entry(frame, font=("Arial", 16), bg="#e99d75", fg="black", bd=0, highlightthickness=0, relief="flat", justify="center")
+        entry = tk.Entry(frame, font=("Courier", 16), bg="#e99d75", fg="black", bd=0, highlightthickness=0, relief="flat", justify="center")
         entry.place(x=20, y=78, width=140, height=28)
         return btn
 
@@ -558,7 +587,7 @@ def main():
         box.place(x=x, y=y)
         box.create_rectangle(0, 0, 180, 180, fill=box_color, outline="#e99d75", width=0)
         line_id = box.create_line(0, 90, 180, 90, width=38, fill="#e99d75")
-        box.create_text(90, 90, text=text, font=("Arial", 16, "bold"), fill="black")
+        box.create_text(90, 90, text=text, font=("Courier", 16, "bold"), fill="black")
         def on_line_click(event):
             command()
         box.tag_bind(line_id, '<Button-1>', on_line_click)
